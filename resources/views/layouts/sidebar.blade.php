@@ -48,6 +48,20 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-header">SETTINGS</li>
+                <li class="nav-item has-treeview">
+                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p>
+                            {{ __('Logout') }}
+                        </p>
+                    </a>
+                    ​
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

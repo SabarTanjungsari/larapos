@@ -202,7 +202,14 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <a href="#" class="btn btn-default btn-flat">Profile</a>
-                            <a href="#" class="btn btn-default btn-flat float-right">Sign out</a>
+                            <a href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                class="btn btn-default btn-flat float-right">
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
                         </li>
                     </ul>
                 </li>
