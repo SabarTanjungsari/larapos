@@ -16,7 +16,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('product.index') }}">Product</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Product</a></li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>
                 </div><!-- /.col -->
@@ -39,7 +39,7 @@
                         <x-alert type="danger">{!! session('error') !!}</x-alert>
                         @endif
 
-                        <form action="{{ route('product.update', $product->id) }}" method="post"
+                        <form action="{{ route('products.update', $product->id) }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="_method" value="PUT">

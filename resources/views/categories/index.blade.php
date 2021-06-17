@@ -35,7 +35,7 @@
                         <x-alert type="info">{!! session('error') !!}</x-alert>
                         @endif
 
-                        <form role="form" action="{{ route('category.store') }}" method="POST">
+                        <form role="form" action="{{ route('categories.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Categori</label>
@@ -84,10 +84,11 @@
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->description }}</td>
                                         <td>
-                                            <form action="{{ route('category.destroy', $category->id) }}" method="POST">
+                                            <form action="{{ route('categories.destroy', $category->id) }}"
+                                                method="POST">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <a href="{{ route('category.edit', $category->id) }}"
+                                                <a href="{{ route('categories.edit', $category->id) }}"
                                                     class="btn btn-warning btn-sm">
                                                     <i class="fa fa-edit"></i>
                                                 </a>

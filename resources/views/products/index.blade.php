@@ -32,7 +32,7 @@
                 <div class="col-md-12">
                     <x-card title="List of Category" footer="">
                         @slot('title')
-                        <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm">
+                        <a href="{{ route('products.create') }}" class="btn btn-primary btn-sm">
                             <i class="fa fa-plus-circle"></i> Add
                         </a>
                         @endslot
@@ -74,10 +74,10 @@
                                         <td>{{$product->category->name}}</td>
                                         <td>{{$product->updated_at}}</td>
                                         <td>
-                                            <form action="{{ route('product.destroy', $product->id) }}" method="POST">
+                                            <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <a href="{{ route('product.edit', $product->id) }}"
+                                                <a href="{{ route('products.edit', $product->id) }}"
                                                     class="btn btn-warning btn-sm">
                                                     <i class="fa fa-edit"></i>
                                                 </a>

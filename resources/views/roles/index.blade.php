@@ -35,7 +35,7 @@
                         <x-alert type="info">{!! session('error') !!}</x-alert>
                         @endif
 
-                        <form role="form" action="{{ route('role.store') }}" method="POST">
+                        <form role="form" action="{{ route('roles.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Role</label>
@@ -81,7 +81,7 @@
                                         <td>{{ $role->guard_name }}</td>
                                         <td>{{ $role->created_at }}</td>
                                         <td>
-                                            <form action="{{ route('role.destroy', $role->id) }}" method="POST">
+                                            <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button class="btn btn-danger btn-sm">

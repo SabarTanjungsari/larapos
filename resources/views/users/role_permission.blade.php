@@ -44,7 +44,7 @@
                         <x-alert type="info">{!! session('error') !!}</x-alert>
                         @endif
 
-                        <form role="form" action="{{ route('user.add_permission') }}" method="POST">
+                        <form role="form" action="{{ route('users.add_permission') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Name</label>
@@ -68,7 +68,7 @@
                         <x-alert type="success">{!! session('success') !!}</x-alert>
                         @endif
 
-                        <form action="{{ route('user.roles_permission') }}" method="GET">
+                        <form action="{{ route('users.roles_permission') }}" method="GET">
                             <div class="form-group">
                                 <label for="">Roles</label>
                                 <div class="input-group">
@@ -86,7 +86,7 @@
                         </form>
 
                         @if (!empty($permissions))
-                        <form action="{{ route('user.setRolePermission', request()->get('role')) }}" method="post">
+                        <form action="{{ route('users.setRolePermission', request()->get('role')) }}" method="post">
                             @csrf
                             <input type="hidden" name="_method" value="PUT">
                             <div class="form-group">

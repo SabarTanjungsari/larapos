@@ -75,7 +75,7 @@ class ProductController extends Controller
             ]);
 
             //jika berhasil direct ke produk.index
-            return redirect(route('product.index'))
+            return redirect(route('products.index'))
                 ->with(['success' => '<strong>' . $product->name . '</strong> Ditambahkan']);
         } catch (\Exception $e) {
             //jika gagal, kembali ke halaman sebelumnya kemudian tampilkan error
@@ -163,7 +163,7 @@ class ProductController extends Controller
                 'photo' => $photo
             ]);
 
-            return redirect(route('product.index'))->with(['success' => '<strong>' . $product->name . '</strong> Updated.']);
+            return redirect(route('products.index'))->with(['success' => '<strong>' . $product->name . '</strong> Updated.']);
         } catch (\Exception $e) {
             return redirect()->back()->with(['error' => $e->getMessage()]);
         }

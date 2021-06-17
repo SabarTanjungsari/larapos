@@ -35,7 +35,7 @@
                         <x-alert type="info">{!! session('error') !!}</x-alert>
                         @endif
 
-                        <form role="form" action="{{ route('category.update', $category->id) }}" method="POST">
+                        <form role="form" action="{{ route('categories.update', $category->id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="_method" value="PUT">
                             <div class="form-group">

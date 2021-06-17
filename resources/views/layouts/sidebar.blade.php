@@ -23,7 +23,8 @@
                         </p>
                     </a>
                 </li>
-
+                @if (auth()->user()->can('show products') || auth()->user()->can('delete products') ||
+                auth()->user()->can('create products'))
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-database"></i>
@@ -35,20 +36,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href=" {{ route('category.index') }}" class="nav-link">
+                            <a href=" {{ route('categories.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Category</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('product.index') }}" class="nav-link">
+                            <a href="{{ route('products.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-
+                @endif
+                @role('admin')
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
@@ -60,25 +62,26 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href=" {{ route('role.index') }}" class="nav-link">
+                            <a href=" {{ route('roles.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Roles</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href=" {{ route('user.index') }}" class="nav-link">
+                            <a href=" {{ route('users.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Users</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('user.roles_permission') }}" class="nav-link">
+                            <a href="{{ route('users.roles_permission') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Role Permission</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+                @endrole
 
                 <li class="nav-header">SETTINGS</li>
                 <li class="nav-item has-treeview">

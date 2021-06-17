@@ -59,7 +59,7 @@ class UserController extends Controller
         );
 
         $user->assignRole($request->role);
-        return redirect(route('user.index'))->with(['success' => 'User : <strong>' . $user->name . $user->status . '</strong> Added.']);
+        return redirect(route('users.index'))->with(['success' => 'User : <strong>' . $user->name . $user->status . '</strong> Added.']);
     }
 
     /**
@@ -108,7 +108,7 @@ class UserController extends Controller
             'password' => $password
         ]);
 
-        return redirect(route('user.index'))->with(['success' => 'User : <strong>' . $user->name . '</strong> Updated.']);
+        return redirect(route('users.index'))->with(['success' => 'User : <strong>' . $user->name . '</strong> Updated.']);
     }
 
     /**
@@ -161,12 +161,27 @@ class UserController extends Controller
 
     public function setRolePermission(Request $request, $role)
     {
-        //select role berdasarkan namanya
         $role = Role::findByName($role);
 
-        //fungsi syncPermission akan menghapus semua permissio yg dimiliki role tersebut
-        //kemudian di-assign kembali sehingga tidak terjadi duplicate data
         $role->syncPermissions($request->permission);
         return redirect()->back()->with(['success' => 'Permission to Role Saved!']);
+    }
+
+    public function roles(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $roles = Role::pluck('name');
+        return view('users.roles', compact('user', 'roles'));
+    }
+
+    public function setRole(Request $request, $id)
+    {
+        $this->validate($request, [
+            'role' => 'required'
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->syncRoles($request->role);
+        return redirect()->back()->with(['success' => 'The Role is Set.']);
     }
 }
