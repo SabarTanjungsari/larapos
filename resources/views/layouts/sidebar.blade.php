@@ -71,6 +71,12 @@
                                 <p>Users</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('user.roles_permission') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Role Permission</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

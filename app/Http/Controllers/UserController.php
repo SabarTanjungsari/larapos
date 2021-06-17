@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -120,5 +122,51 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->back()->with(['success' => '<strong>' . $user->name . '</strong> Deleted.']);
+    }
+
+    public function rolePermission(Request $request)
+    {
+        $role = $request->get('role');
+
+        $permissions = null;
+        $hasPermission = null;
+
+        $roles = Role::all()->pluck('name');
+
+        if (!empty($role)) {
+            $getRole = Role::findByName($role);
+
+            $hasPermission = DB::table('role_has_permissions')
+                ->select('permissions.name')
+                ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
+                ->where('role_id', $getRole->id)->get()->pluck('name')->all();
+
+            $permissions = Permission::all()->pluck('name');
+        }
+
+        return view('users.role_permission', compact('roles', 'permissions', 'hasPermission'));
+    }
+
+    public function addPermission(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string|unique:permissions'
+        ]);
+
+        $permission = Permission::firstOrCreate([
+            'name' => $request->name
+        ]);
+        return redirect()->back();
+    }
+
+    public function setRolePermission(Request $request, $role)
+    {
+        //select role berdasarkan namanya
+        $role = Role::findByName($role);
+
+        //fungsi syncPermission akan menghapus semua permissio yg dimiliki role tersebut
+        //kemudian di-assign kembali sehingga tidak terjadi duplicate data
+        $role->syncPermissions($request->permission);
+        return redirect()->back()->with(['success' => 'Permission to Role Saved!']);
     }
 }
