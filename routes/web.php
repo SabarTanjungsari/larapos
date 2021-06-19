@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Contracts\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +71,13 @@ Route::group(['middleware' => ['permission:show products|create products|delete 
  * Route group for cashier
  */
 Route::group(['middleware' => ['role:cashier']], function () {
+    Route::get('/transaction', [OrderController::class, 'addOrder'])->name('order.transaction');
+    #Route::get('cart', [ProductController::class, 'cart'])->name('cart');
+    Route::get('add-to-cart/{id}', [OrderController::class, 'addToCart'])->name('add.to.cart');
+    Route::patch('update-cart', [OrderController::class, 'updateCart'])->name('update.cart');
+    Route::delete('remove-from-cart', [OrderController::class, 'removeCart'])->name('remove.from.cart');
+    Route::get('checkout-cart', [OrderController::class, 'checkoutCart'])->name('checkout.from.cart');
+    Route::post('checkout', [OrderController::class, 'storeOrder'])->name('order.storeOrder');
 });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

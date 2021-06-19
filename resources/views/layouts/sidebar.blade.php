@@ -83,6 +83,17 @@
                 </li>
                 @endrole
 
+                @role('cashier')
+                <li class="nav-header">TRANSACTION</li>
+                <li class="nav-item">
+                    <a href=" {{ route('order.transaction') }}" class="nav-link">
+                        <i class="fa fa-shopping-cart nav-icon"></i>
+                        <p>Sales</p>
+                    </a>
+                </li>
+                </li>
+                @endrole
+
                 <li class="nav-header">SETTINGS</li>
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
