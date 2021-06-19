@@ -35,11 +35,11 @@ class AddRelationshipsToOrderlinesTable extends Migration
     {
         Schema::table('orderlines', function (Blueprint $table) {
             $table->dropForeign('orderlines_order_id_foreign');
-            $table->dropIndex('orderlines_order_id_foreign');
+            #$table->dropIndex('orderlines_order_id_foreign');
             #$table->bigInteger('order_id')->change();
 
             $table->dropForeign('orderlines_product_id_foreign');
-            $table->dropIndex('orderlines_product_id_foreign');
+            #$table->dropIndex('orderlines_product_id_foreign');
             #$table->bigInteger('product_id')->change();
         });
     }
