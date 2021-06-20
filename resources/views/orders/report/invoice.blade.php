@@ -68,7 +68,7 @@
 
 <body>
     <div class="header">
-        <h3>Larapos</h3>
+        <h3>{{ config('app.name') }}</h3>
         <h4 style="line-height: 0px;">Invoice: #{{ $order->invoice }}</h4>
         <p><small style="opacity: 0.5;">{{ $order->created_at->format('d-m-Y H:i:s') }}</small></p>
     </div>
