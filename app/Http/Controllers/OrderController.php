@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrderInvoice;
 use App\Models\Order;
 use App\Models\Partner;
 use App\Models\Product;
@@ -113,7 +114,7 @@ class OrderController extends Controller
 
     public function invoiceExcel($invoice)
     {
-        # code...
+        return (new OrderInvoice($invoice))->download('invoice-' . $invoice . '.xlsx');
     }
 
     /**
