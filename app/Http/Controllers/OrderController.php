@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Partner;
 use App\Models\Product;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,9 +18,102 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $partners = Partner::orderBy('name', 'ASC')->get();
+        $users = User::role('cashier')->orderBy('name', 'ASC')->get();
+        $orders = Order::orderBy('created_at', 'DESC')->with('orderline', 'partner');
+
+        # By Partner
+        if (!empty($request->partner_id)) {
+            $orders = $orders->where('partner_id', $request->partner_id);
+        }
+
+        # By User - Cashier
+        if (!empty($request->user_id)) {
+            $orders = $orders->where('user_id', $request->user_id);
+        }
+
+        # By Periode
+        if (!empty($request->startdate) && !empty($request->enddate)) {
+            $this->validate($request, [
+                'startdate' => 'nullable|date',
+                'enddate' => 'nullable|date'
+            ]);
+
+            # Format Date
+            $startdate = Carbon::parse($request->startdate)->format('Y-m-d') . ' 00:00:01';
+            $enddate = Carbon::parse($request->enddate)->format('Y-m-d') . ' 23:59:59';
+
+            # Add condision Between
+            $orders = $orders->whereBetween('created_at', [$startdate, $enddate])->get();
+        } else {
+            $orders = $orders->take(10)->skip(0)->get();
+        }
+
+        return view('orders.index', [
+            'orders' => $orders,
+            'sold' => $this->countItem($orders),
+            'total' => $this->countTotal($orders),
+            'total_partner' => $this->countPartner($orders),
+            'partners' => $partners,
+            'users' => $users
+        ]);
+    }
+
+    private function countPartner($orders)
+    {
+        $partner = [];
+        if ($orders->count() > 0) {
+            foreach ($orders as $row) {
+                $partner[] = $row->partner->name;
+            }
+        }
+
+        return count(array_unique($partner));
+    }
+
+    private function countTotal($orders)
+    {
+        $total = 0;
+        if ($orders->count() > 0) {
+            $sub_total = $orders->pluck('grandtotal')->all();
+            $total = array_sum($sub_total);
+        }
+        return $total;
+    }
+
+    private function countItem($order)
+    {
+        $data = 0;
+        if ($order->count() > 0) {
+            foreach ($order as $row) {
+                $qty = $row->orderline->pluck('qty')->all();
+                $val = array_sum($qty);
+                $data += $val;
+            }
+        }
+
+        return $data;
+    }
+
+    public function invoicePdf($invoice)
+    {
+        $order = Order::where('invoice', $invoice)
+            ->with('partner', 'orderline', 'orderline.product')->first();
+
+        $pdf = PDF::setOptions(
+            ['dpi' => 150, 'defaultFont' => 'sans-serif']
+        )
+            ->loadView('orders.report.invoice', compact('order'))
+            ->setPaper('A5', 'landscape');
+
+        return $pdf->stream();
+    }
+
+    public function invoiceExcel($invoice)
+    {
+        # code...
     }
 
     /**

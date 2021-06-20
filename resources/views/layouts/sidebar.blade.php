@@ -23,6 +23,7 @@
                         </p>
                     </a>
                 </li>
+
                 @if (auth()->user()->can('show products') || auth()->user()->can('delete products') ||
                 auth()->user()->can('create products'))
                 <li class="nav-item">
@@ -50,6 +51,7 @@
                     </ul>
                 </li>
                 @endif
+
                 @role('admin')
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -83,16 +85,21 @@
                 </li>
                 @endrole
 
+                <li class="nav-header">SALES</li>
                 @role('cashier')
-                <li class="nav-header">TRANSACTION</li>
                 <li class="nav-item">
                     <a href=" {{ route('order.transaction') }}" class="nav-link">
                         <i class="fa fa-shopping-cart nav-icon"></i>
-                        <p>Sales</p>
+                        <p>Transaction</p>
                     </a>
                 </li>
-                </li>
                 @endrole
+                <li class="nav-item">
+                    <a href=" {{ route('order.index') }}" class="nav-link">
+                        <i class="fa fa-shopping-basket nav-icon"></i>
+                        <p>Order</p>
+                    </a>
+                </li>
 
                 <li class="nav-header">SETTINGS</li>
                 <li class="nav-item has-treeview">

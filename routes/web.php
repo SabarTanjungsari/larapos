@@ -72,12 +72,15 @@ Route::group(['middleware' => ['permission:show products|create products|delete 
  */
 Route::group(['middleware' => ['role:cashier']], function () {
     Route::get('/transaction', [OrderController::class, 'addOrder'])->name('order.transaction');
-    #Route::get('cart', [ProductController::class, 'cart'])->name('cart');
     Route::get('add-to-cart/{id}', [OrderController::class, 'addToCart'])->name('add.to.cart');
     Route::patch('update-cart', [OrderController::class, 'updateCart'])->name('update.cart');
     Route::delete('remove-from-cart', [OrderController::class, 'removeCart'])->name('remove.from.cart');
     Route::get('checkout-cart', [OrderController::class, 'checkoutCart'])->name('checkout.from.cart');
     Route::post('checkout', [OrderController::class, 'storeOrder'])->name('order.storeOrder');
+
+    Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/order/pdf/{invoice}', [OrderController::class, 'invoicePdf'])->name('order.pdf');
+    Route::get('/order/excel/{invoice}', [OrderController::class, 'invoiceExcel'])->name('order.excel');
 });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

@@ -11,9 +11,20 @@ class Order extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $dates = ['created_at'];
 
     public function orderline()
     {
         return $this->HasMany(Orderline::class);
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
