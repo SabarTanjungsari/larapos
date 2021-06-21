@@ -43,16 +43,16 @@
                             @csrf
                             <div class="row">
                                 <div class="form-group col-sm-6">
-                                    <label for="">Product Code</label>
-                                    <input type="text" name="code" required maxlength="10"
-                                        class="form-control {{ $errors->has('code') ? 'is-invalid':'' }}">
-                                    <p class="text-danger">{{ $errors->first('code') }}</p>
-                                </div>
-                                <div class="form-group col-sm-6">
                                     <label for="">Product Name</label>
                                     <input type="text" name="name" required
                                         class="form-control {{ $errors->has('name') ? 'is-invalid':'' }}">
                                     <p class="text-danger">{{ $errors->first('name') }}</p>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="">Product Code</label>
+                                    <input type="text" name="code" required maxlength="10" readonly value="{{$code}}"
+                                        class="form-control {{ $errors->has('code') ? 'is-invalid':'' }}">
+                                    <p class="text-danger">{{ $errors->first('code') }}</p>
                                 </div>
                             </div>
 

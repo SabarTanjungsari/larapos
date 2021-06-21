@@ -107,8 +107,6 @@
 <script>
     $(function () {
         var ctx = document.getElementById("myChart").getContext("2d");
-        // examine example_data.json for expected response data
-        var APP_URL = window.location.origin;
         var json_url = APP_URL + "/api/chart";
 
         $.ajax({

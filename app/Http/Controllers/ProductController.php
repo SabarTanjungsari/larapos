@@ -30,8 +30,9 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name', 'DESC')->get();
+        $code = Str::random(10);
 
-        return view('products.create', compact('categories'));
+        return view('products.create', compact('categories', 'code'));
     }
 
     /**

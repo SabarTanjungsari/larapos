@@ -116,7 +116,6 @@
 
     function getDetailPartner() {
         var id = $('[name="partner_id"]').val();
-        var APP_URL = window.location.origin;
 
         if (id != '') {
             $.ajax({

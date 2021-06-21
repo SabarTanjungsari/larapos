@@ -6,7 +6,8 @@ $(function () {
 
 function getDetailProduct() {
     var id = $('[name="product_id"]').val();
-    var APP_URL = window.location.origin;
+console.log(APP_URL);
+
     if (id != '') {
         $.ajax({
             url: APP_URL + "/api/product/" + id,
@@ -22,7 +23,7 @@ function getDetailProduct() {
                     );
                 $('#showImage').removeClass('d-none');
                 if(data.photo){
-                    $('#photo').attr('src', '/uploads/product/' + data.photo);
+                    $('#photo').attr('src', APP_URL + '/uploads/product/' + data.photo);
                 } else {
                     $('#photo').attr('src', 'http://via.placeholder.com/50x50');
                 }

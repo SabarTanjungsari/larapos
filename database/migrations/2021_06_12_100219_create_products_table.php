@@ -20,6 +20,8 @@ class CreateProductsTable extends Migration
             $table->integer('stock');
             $table->double('price');
             $table->bigInteger('category_id');
+            $table->char('code', 10)->unique();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }
