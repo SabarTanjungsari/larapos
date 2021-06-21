@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/product/{id}', [OrderController::class, 'getProduct']);
 Route::get('/partner/{id}', [OrderController::class, 'getPartner']);
 Route::get('/partner', [OrderController::class, 'getAllPartner'])->name('partner');
+Route::get('/chart', [HomeController::class, 'getChart']);

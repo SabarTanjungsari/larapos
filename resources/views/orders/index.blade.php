@@ -135,6 +135,7 @@
 @endsection
 
 <!-- The Modal -->
+@section('modal')
 <div class="modal" id="myModal">
     <div class="modal-dialog modal-lg   ">
         <div class="modal-content">
@@ -151,7 +152,7 @@
                                 <div class="form-group">
                                     <label for="">Start Date</label>
                                     <input type="text" name="startdate" class="form-control
-                                    {{$errors->has('startdate') ? 'is-invalid' : ''}}" id="startdate"
+                                {{$errors->has('startdate') ? 'is-invalid' : ''}}" id="startdate"
                                         value="{{ request()->get('startdate') }}">
                                 </div>
                                 <div class="form-group">
@@ -198,3 +199,4 @@
         </div>
     </div>
 </div>
+@endsection
