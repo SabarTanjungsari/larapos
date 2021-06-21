@@ -58,8 +58,21 @@ class OrderController extends Controller
             'total' => $this->countTotal($orders),
             'total_partner' => $this->countPartner($orders),
             'partners' => $partners,
-            'users' => $users
+            'users' => $users,
+            'cashiers' => $this->countCashier($orders)
         ]);
+    }
+
+    private function countCashier($orders)
+    {
+        $cashiers = [];
+        if ($orders->count() > 0) {
+            foreach ($orders as $row) {
+                $cashiers[] = $row->user->name;
+            }
+        }
+
+        return count(array_unique($cashiers));
     }
 
     private function countPartner($orders)

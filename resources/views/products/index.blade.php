@@ -62,7 +62,7 @@
                                             <img src="{{ asset('uploads/product/'. $product->photo) }}"
                                                 alt="{{ $product->name}}" width="50px" height="50px">
                                             @else
-                                            <img src="http://via.placeholder.com/50x50" alt="{{ $product->name }}">
+                                            <img src="{{asset('dist/img/50x50.png')}}" alt="{{ $product->name }}">
                                             @endif
                                         </td>
                                         <td>

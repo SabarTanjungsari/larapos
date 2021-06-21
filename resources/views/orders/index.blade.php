@@ -22,101 +22,123 @@
         </div>
     </div>
 
-    <section class="content" id="dw">
-        <div class="container-fluid">
-            <div class="row">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ $sold }}</h3>
 
-
-                <div class="col-md-12">
-                    <x-card title="" footer="">
-                        @slot('title')
-                        Data Transaction
-                        @endslot
-
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="small-box bg-info">
-                                    <div class="inner">
-                                        <h3>{{ $sold }}</h3>
-                                        <p>Items Sold</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-bag"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="small-box bg-success">
-                                    <div class="inner">
-                                        <h3>Rp {{ number_format($total) }}</h3>
-                                        <p>Total Sales</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-stats-bars"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="small-box bg-primary">
-                                    <div class="inner">
-                                        <h3>{{ $total_partner }}</h3>
-                                        <p>Total Partner</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="ion ion-stats-bars"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="table table-hover table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Invoice</th>
-                                        <th>Partner</th>
-                                        <th>Phone No</th>
-                                        <th>Total</th>
-                                        <th>Cashier</th>
-                                        <th>Date Transaction</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- LOOPING MENGGUNAKAN FORELSE, DIRECTIVE DI LARAVEL 5.6 -->
-                                    @forelse ($orders as $row)
-                                    <tr>
-                                        <td><strong>#{{ $row->invoice }}</strong></td>
-                                        <td>{{ $row->partner->name }}</td>
-                                        <td>{{ $row->partner->phone }}</td>
-                                        <td>Rp {{ number_format($row->grandtotal) }}</td>
-                                        <td>{{ $row->user->name }}</td>
-                                        <td>{{ $row->created_at->format('d-m-Y H:i:s') }}</td>
-                                        <td>
-                                            <a href="{{ route('order.pdf', $row->invoice) }}" target="_blank"
-                                                class="btn btn-primary btn-sm">
-                                                <i class="fa fa-print"></i>
-                                            </a>
-                                            <a href="{{ route('order.excel', $row->invoice) }}" target="_blank"
-                                                class="btn btn-info btn-sm">
-                                                <i class="fa fa-file-excel"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td class="text-center" colspan="7">Tidak ada data transaksi</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </x-card>
+                        <p>Items Sold</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>Rp {{ number_format($total) }}</h3>
+
+                        <p>Total Sales</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="{{ route('order.index') }}" class="small-box-footer">More info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>{{ $total_partner }}</h3>
+
+                        <p>Total Customers</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                    <div class="inner">
+                        <h3>{{ $cashiers }}</h3>
+
+                        <p>Total Cashier</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
         </div>
-    </section>
+        <div class="row">
+            <div class="col-md-12">
+                <x-card title="" footer="">
+                    @slot('title')
+                    Data Transaction
+                    @endslot
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Invoice</th>
+                                    <th>Partner</th>
+                                    <th>Phone No</th>
+                                    <th>Total</th>
+                                    <th>Cashier</th>
+                                    <th>Date Transaction</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- LOOPING MENGGUNAKAN FORELSE, DIRECTIVE DI LARAVEL 5.6 -->
+                                @forelse ($orders as $row)
+                                <tr>
+                                    <td><strong>#{{ $row->invoice }}</strong></td>
+                                    <td>{{ $row->partner->name }}</td>
+                                    <td>{{ $row->partner->phone }}</td>
+                                    <td>Rp {{ number_format($row->grandtotal) }}</td>
+                                    <td>{{ $row->user->name }}</td>
+                                    <td>{{ $row->created_at->format('d-m-Y H:i:s') }}</td>
+                                    <td>
+                                        <a href="{{ route('order.pdf', $row->invoice) }}" target="_blank"
+                                            class="btn btn-primary btn-sm">
+                                            <i class="fa fa-print"></i>
+                                        </a>
+                                        <a href="{{ route('order.excel', $row->invoice) }}" target="_blank"
+                                            class="btn btn-info btn-sm">
+                                            <i class="fa fa-file-excel"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td class="text-center" colspan="7">Tidak ada data transaksi</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                </x-card>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 

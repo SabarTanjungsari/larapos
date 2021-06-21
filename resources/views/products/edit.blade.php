@@ -101,8 +101,13 @@
                                     <input type="file" name="photo" class="form-control">
                                     <p class="text-danger">{{ $errors->first('photo') }}</p>
                                     <hr>
+                                    @if ($product->photo)
                                     <img src="{{asset('uploads/product/'.$product->photo)}}" alt="{{$product->name}}"
                                         width="150px" height="150px">
+                                    @else
+                                    <img src="{{asset('dist/img/150x150.png')}}" alt="{{$product->name}}" width="150px"
+                                        height="150px">
+                                    @endif
                                 </div>
                             </div>
                             <div class="form-group">

@@ -25,7 +25,7 @@ console.log(APP_URL);
                 if(data.photo){
                     $('#photo').attr('src', APP_URL + '/uploads/product/' + data.photo);
                 } else {
-                    $('#photo').attr('src', 'http://via.placeholder.com/50x50');
+                    $('#photo').attr('src', APP_URL + '/dist/img/50x50.png');
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {

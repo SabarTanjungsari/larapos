@@ -100,7 +100,7 @@ class CategoryController extends Controller
                 'description' => $request->description
             ]);
 
-            return redirect(route('category.index'))->with(['success' => 'Category : ' . $category->name . ' Updated.']);
+            return redirect(route('categories.index'))->with(['success' => 'Category : ' . $category->name . ' Updated.']);
         } catch (\Exception $e) {
             return redirect()->back()->with(['error' => $e->getMessage()]);
         }
