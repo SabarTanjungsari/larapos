@@ -19,10 +19,23 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+        $this->middleware('permission:sales-list|sales-create|sales-edit|sales-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:sales-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:sales-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:sales-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         $partners = Partner::orderBy('name', 'ASC')->get();
-        $users = User::role('cashier')->orderBy('name', 'ASC')->get();
+        $users = User::orderBy('name', 'ASC')->get();
         $orders = Order::orderBy('created_at', 'DESC')->with('orderline', 'partner');
 
         # By Partner

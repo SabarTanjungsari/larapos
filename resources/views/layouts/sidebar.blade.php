@@ -24,8 +24,7 @@
                     </a>
                 </li>
 
-                @if (auth()->user()->can('show products') || auth()->user()->can('delete products') ||
-                auth()->user()->can('create products'))
+                @can('product-list', 'category-list')
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-database"></i>
@@ -36,23 +35,27 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @can('category-list')
                         <li class="nav-item">
                             <a href=" {{ route('categories.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Category</p>
                             </a>
                         </li>
+                        @endcan
+                        @can('product-list')
                         <li class="nav-item">
                             <a href="{{ route('products.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product</p>
                             </a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
-                @endif
+                @endcan
 
-                @role('admin')
+                @can('role-list', 'user-list')
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
@@ -63,43 +66,43 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @can('role-list')
                         <li class="nav-item">
                             <a href=" {{ route('roles.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Roles</p>
                             </a>
                         </li>
+                        @endcan
+                        @can('user-list')
                         <li class="nav-item">
                             <a href=" {{ route('users.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Users</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('users.roles_permission') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Role Permission</p>
-                            </a>
-                        </li>
+                        @endcan
                     </ul>
                 </li>
-                @endrole
+                @endcan
 
+                @can('cart-list')
                 <li class="nav-header">SALES</li>
-                @role('cashier')
                 <li class="nav-item">
                     <a href=" {{ route('order.transaction') }}" class="nav-link">
                         <i class="fa fa-shopping-cart nav-icon"></i>
                         <p>Transaction</p>
                     </a>
                 </li>
-                @endrole
+                @endcan
+                @can('sales-list')
                 <li class="nav-item">
                     <a href=" {{ route('order.index') }}" class="nav-link">
                         <i class="fa fa-shopping-basket nav-icon"></i>
                         <p>Order</p>
                     </a>
                 </li>
+                @endcan
 
                 <li class="nav-header">SETTINGS</li>
                 <li class="nav-item has-treeview">

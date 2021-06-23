@@ -32,9 +32,11 @@
                 <div class="col-md-12">
                     <x-card title="List of Category" footer="">
                         @slot('title')
+                        @can('product-create')
                         <a href="{{ route('products.create') }}" class="btn btn-primary btn-sm">
                             <i class="fa fa-plus-circle"></i> Add
                         </a>
+                        @endcan
                         @endslot
 
                         @if (session('success'))
@@ -73,19 +75,26 @@
                                         <td>Rp {{number_format($product->price)}}</td>
                                         <td>{{$product->category->name}}</td>
                                         <td>{{$product->updated_at}}</td>
+                                        @can('product-edit', 'product-delete')
                                         <td>
-                                            <form action="{{ route('products.destroy', $product->id) }}" method="POST">
+                                            @can('product-edit')
+                                            <a href="{{ route('products.edit', $product->id) }}"
+                                                class="btn btn-warning btn-sm">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            @endcan
+                                            @can('product-delete')
+                                            <form style="display: inline"
+                                                action="{{ route('products.destroy', $product->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <a href="{{ route('products.edit', $product->id) }}"
-                                                    class="btn btn-warning btn-sm">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
                                                 <button class="btn btn-danger btn-sm">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </form>
+                                            @endcan
                                         </td>
+                                        @endcan
                                     </tr>
                                     @empty
                                     <tr>

@@ -10,6 +10,10 @@
       });
 4. Update .env
    APP_URL=http://localhost/mypos
+5. Update BASE_URL Javascript
+   <script>
+        window.APP_URL = '{{ config('app.url')}}';
+    </script>
 
 ## License
 

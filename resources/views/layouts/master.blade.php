@@ -8,7 +8,7 @@
     @yield('title')
 
     <script>
-        window.APP_URL = '{{ config('app.url') . '/mypos' }}';
+        window.APP_URL = '{{ config('app.url')}}';
     </script>
 
     <!-- Google Font: Source Sans Pro -->
