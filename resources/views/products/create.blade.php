@@ -24,7 +24,7 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+    {{$partner}}
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -35,22 +35,22 @@
                         @slot('title')
                         @endslot
 
-                        @if (session('error'))
-                        <x-alert type="error">{!! session('error') !!}</x-alert>
+                        @if (session('errors'))
+                        <x-alert type="error">{!! session('errors') !!}</x-alert>
                         @endif
 
-                        <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('products.store') }}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label for="">Product Name</label>
-                                    <input type="text" name="name" required
+                                    <input type="text" name="name"
                                         class="form-control {{ $errors->has('name') ? 'is-invalid':'' }}">
                                     <p class="text-danger">{{ $errors->first('name') }}</p>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="">Product Code</label>
-                                    <input type="text" name="code" required maxlength="10" readonly value="{{$code}}"
+                                    <input type="text" name="code" maxlength="10" readonly value="{{$code}}"
                                         class="form-control {{ $errors->has('code') ? 'is-invalid':'' }}">
                                     <p class="text-danger">{{ $errors->first('code') }}</p>
                                 </div>
@@ -66,13 +66,13 @@
                             <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label for="">Stock</label>
-                                    <input type="number" name="stock" required
+                                    <input type="number" name="stock"
                                         class="form-control {{ $errors->has('stock') ? 'is-invalid':'' }}">
                                     <p class="text-danger">{{ $errors->first('stock') }}</p>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="">Price</label>
-                                    <input type="number" name="price" required
+                                    <input type="number" name="price"
                                         class="form-control {{ $errors->has('price') ? 'is-invalid':'' }}">
                                     <p class="text-danger">{{ $errors->first('price') }}</p>
                                 </div>

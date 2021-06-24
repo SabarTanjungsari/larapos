@@ -10,6 +10,13 @@ class Partner extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public $rules = [
+        'name' => 'required',
+        'email' => 'required|email|unique:partners',
+        'address' => 'required',
+        'phone' => 'required'
+    ];
+
     public function getNameAttribute($value)
     {
         return ucfirst($value);

@@ -16,6 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->boolean('isactive')->default(true);
             $table->string('description')->nullable();
             $table->integer('stock');
             $table->double('price');
@@ -23,6 +24,9 @@ class CreateProductsTable extends Migration
             $table->char('code', 10)->unique();
             $table->string('photo')->nullable();
             $table->timestamps();
+
+            $table->bigInteger('category_id')->unsigned()->change();
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

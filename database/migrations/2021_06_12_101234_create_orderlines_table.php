@@ -20,6 +20,17 @@ class CreateOrderlinesTable extends Migration
             $table->integer('qty');
             $table->double('price');
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->bigInteger('order_id')->unsigned()->change();
+            $table->foreign('order_id')->references('id')->on('orders')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->bigInteger('product_id')->unsigned()->change();
+            $table->foreign('product_id')->references('id')->on('products')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

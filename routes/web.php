@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -37,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/categories', CategoryController::class);
     Route::resource('/products', ProductController::class);
+    Route::resource('/partners', PartnerController::class);
 
     Route::get('/transaction', [OrderController::class, 'addOrder'])->name('order.transaction');
     Route::get('add-to-cart/{id}', [OrderController::class, 'addToCart'])->name('add.to.cart');

@@ -20,6 +20,15 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('user_id');
             $table->double('grandtotal');
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->bigInteger('partner_id')->unsigned()->change();
+            $table->foreign('partner_id')->references('id')->on('partners')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->bigInteger('user_id')->unsigned()->change();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

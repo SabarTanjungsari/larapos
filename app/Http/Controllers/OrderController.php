@@ -323,7 +323,10 @@ class OrderController extends Controller
             ], [
                 'name' => $request->name,
                 'address' => $request->address,
-                'phone' => $request->phone
+                'phone' => $request->phone,
+                'isactive' => true,
+                'iscustomer' => true,
+                'isvendor' => false
             ]);
 
             $order = Order::create([

@@ -29,16 +29,16 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-database"></i>
                         <p>
-                            Master
+                            Database
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">2</span>
+                            <span class="badge badge-info right"></span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         @can('category-list')
                         <li class="nav-item">
                             <a href=" {{ route('categories.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="far fa-circle nav-icon text-purple"></i>
                                 <p>Category</p>
                             </a>
                         </li>
@@ -46,8 +46,16 @@
                         @can('product-list')
                         <li class="nav-item">
                             <a href="{{ route('products.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="far fa-circle nav-icon text-secondary"></i>
                                 <p>Product</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('partner-list')
+                        <li class="nav-item">
+                            <a href="{{ route('partners.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon text-success"></i>
+                                <p>Business Partner</p>
                             </a>
                         </li>
                         @endcan
@@ -61,15 +69,15 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Users Manajement
-                            <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">2</span>
+                            <i class="fas fa-angle-left right text-cyan"></i>
+                            <span class="badge badge-info right"></span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         @can('role-list')
                         <li class="nav-item">
                             <a href=" {{ route('roles.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="far fa-circle nav-icon text-fuchsia"></i>
                                 <p>Roles</p>
                             </a>
                         </li>
@@ -77,7 +85,7 @@
                         @can('user-list')
                         <li class="nav-item">
                             <a href=" {{ route('users.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="far fa-circle nav-icon text-blue"></i>
                                 <p>Users</p>
                             </a>
                         </li>

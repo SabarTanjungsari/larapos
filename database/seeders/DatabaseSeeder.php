@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use CreatePartnersTable;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionTableSeeder::class);
         $this->call(CreateAdminUserSeeder::class);
         $this->call(CreateProductSeeder::class);
+        $this->call(CreatePartnerSeeder::class);
     }
 }
