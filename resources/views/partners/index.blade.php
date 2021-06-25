@@ -4,6 +4,10 @@
 <title>Partner Management</title>
 @endsection
 
+@section('css')
+<link href="{{ asset('plugins/sweetalert2/sweetalert2.css') }}" rel="stylesheet" />
+@endsection
+
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -94,11 +98,11 @@
                                                 action="{{ route('partners.destroy', $partner->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <button class="btn btn-danger btn-sm">
+                                                <button class="btn btn-danger btn-sm delete-confirm"
+                                                    data-name="{{ $partner->name }}" type="submit">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
-                                            </form>
-                                            @endcan
+                                            </form>@endcan
                                         </td>
                                         @endcan
                                     </tr>
@@ -122,4 +126,28 @@
     </section>
     <!-- /.content -->
 </div>
+@endsection
+@section('js')
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script type="text/javascript">
+    $('.delete-confirm').click(function(event) {
+      var form =  $(this).closest('form');
+      var name = $(this).data('name');
+      event.preventDefault();
+
+      Swal.fire({
+        title: name + ' will be deleted. ' ,
+        text: 'If you delete this, it will be gone forever',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            })
+  });
+</script>
 @endsection

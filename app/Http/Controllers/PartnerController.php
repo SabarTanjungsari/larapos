@@ -127,7 +127,6 @@ class PartnerController extends Controller
         $request['isvendor'] = $vendor;
         $request['isactive'] = $active;
 
-        #dd($request->all());
         $updated = Partner::findOrFail($id);
         $updated->update($request->all());
         return redirect(route('partners.index'))
@@ -140,8 +139,10 @@ class PartnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Partner $partner)
     {
-        //
+        $partner->delete();
+        return redirect(route('partners.index'))
+            ->with(['success' => '<strong>' . $partner->name . '</strong> deleted successfully.']);
     }
 }
