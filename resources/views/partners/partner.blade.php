@@ -47,16 +47,14 @@
                                 <div class="form-group col-sm-6">
                                     <label for="">Partner Name</label>
                                     <input type="text" name="name" value="{{$partner->name}}"
-                                        class="form-control {{ $errors->has('name') ? 'is-invalid':'' }}"
-                                        value="{{$partner->name}}">
-                                    <p class="text-danger">{{ $errors->first('name') }}</p>
+                                        class="form-control {{ $errors->has('name') ? 'is-invalid':'' }}" <p
+                                        class="text-danger">{{ $errors->first('name') }}</p>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="">Email</label>
                                     <input type="email" name="email" value="{{$partner->email}}"
-                                        class="form-control {{ $errors->has('email') ? 'is-invalid':'' }}"
-                                        value="{{$partner->email}}">
-                                    <p class="text-danger">{{ $errors->first('email') }}</p>
+                                        class="form-control {{ $errors->has('email') ? 'is-invalid':'' }}" <p
+                                        class="text-danger">{{ $errors->first('email') }}</p>
                                 </div>
                             </div>
                             <div class="row">

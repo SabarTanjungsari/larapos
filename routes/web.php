@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\Transaction;
@@ -37,6 +38,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/roles', RoleController::class);
     Route::resource('/users', UserController::class);
+    Route::resource('/system', SystemController::class)->except([
+        'show', 'store', 'destroy', 'create'
+    ]);
 
     Route::resource('/categories', CategoryController::class);
     Route::resource('/products', ProductController::class);

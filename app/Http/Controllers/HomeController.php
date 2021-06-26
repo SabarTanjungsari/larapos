@@ -29,6 +29,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+
+        #dd(session()->get('identity'));
+
+
         $product = Product::count();
         $order = Order::count();
         $partner = Partner::count();

@@ -68,9 +68,14 @@
 
 <body>
     <div class="header">
-        <h3>{{ config('app.name') }}</h3>
+        <p>
+            <strong>{{ session('identity')[0]['name'] }}</strong><br>
+            {{ session('identity')[0]['address'] }} <br>
+            Phone :{{ session('identity')[0]['phone'] }}
+        </p>
+        <hr>
         <h4 style="line-height: 0px;">Invoice: #{{ $order->invoice }}</h4>
-        <p><small style="opacity: 0.5;">{{ $order->created_at->format('d-m-Y H:i:s') }}</small></p>
+        <p><small style="opacity: 0.5;">Tanggal : {{ date('d F Y', strtotime($order->dateordered)) }}</small></p>
     </div>
     <div class="partner">
         <table>

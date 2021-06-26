@@ -1,9 +1,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link">
-        <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="LaraPOS" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
-        <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
+        <img src="{{ !empty(session('identity')[0]['photo']) ? asset('dist/img/'.session('identity')[0]['photo']) : asset('dist/img/AdminLTELogo.png') }}"
+            alt="LaraPOS" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">{{ session('identity')[0]['name'] }}</span>
     </a>
 
     <!-- Sidebar -->
@@ -113,6 +113,12 @@
                 @endcan
 
                 <li class="nav-header">SETTINGS</li>
+                <li class="nav-item">
+                    <a href=" {{ route('system.index') }}" class="nav-link">
+                        <i class="fa fa-cog nav-icon text-indigo"></i>
+                        <p>Setting</p>
+                    </a>
+                </li>
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">

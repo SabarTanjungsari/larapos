@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\System;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -48,8 +49,24 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 1])) {
+
+            /**
+             * System
+             */
+            $system = System::findOrFail(1);
+            $identity[] = [
+                "name" => $system->name,
+                "email" => $system->email,
+                "address" => $system->address,
+                "photo" => $system->photo,
+                "phone" => $system->phone
+            ];
+
+            session()->put('identity', $identity);
+
             return redirect()->intended('home');
         }
+
         return redirect()->back()->with(['error' => 'Password Invalid / Inactive Users']);
     }
 }
