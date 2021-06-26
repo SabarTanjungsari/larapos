@@ -34,7 +34,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $partners = Partner::orderBy('name', 'ASC')->get();
+        $partners = Partner::where('iscustomer', true)->orderBy('name', 'ASC')->get();
         $users = User::orderBy('name', 'ASC')->get();
         $orders = Order::where('issotrx', true)->orderBy('created_at', 'DESC')->with('orderline', 'partner', 'user');
 
@@ -228,7 +228,8 @@ class OrderController extends Controller
                 "name" => $product->name,
                 "quantity" => 1,
                 "price" => $product->price,
-                "photo" => $product->photo
+                "photo" => $product->photo,
+                "stock" => $product->stock
             ];
         }
 

@@ -71,14 +71,15 @@
                                             <sup class="text text-success">{{$product->code}}</sup>
                                             <strong>{{ucfirst($product->name)}}</strong>
                                         </td>
-                                        <td>{{$product->stock}}</td>
-                                        <td>Rp {{number_format($product->price)}}</td>
+                                        <td class="text-right {{ $product->stock <= 0 ? 'text-danger' : ''}}">
+                                            {{$product->stock}}</td>
+                                        <td class="text-right">{{number_format($product->price)}}</td>
                                         <td>{{$product->category->name}}</td>
                                         <td>{{$product->updated_at}}</td>
                                         @can('product-edit', 'product-delete')
                                         <td>
                                             @can('product-edit')
-                                            <a href="{{ route('products.edit', $product->id) }}"
+                                            <a href=" {{ route('products.edit', $product->id) }}"
                                                 class="btn btn-warning btn-sm">
                                                 <i class="fa fa-edit"></i>
                                             </a>

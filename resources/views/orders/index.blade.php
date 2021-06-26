@@ -101,7 +101,7 @@
                                     <th>Phone No</th>
                                     <th>Total</th>
                                     <th>Cashier</th>
-                                    <th>Date Transaction</th>
+                                    <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -111,10 +111,10 @@
                                 <tr class="{{$row->docstatus == 'CO' ? 'text-primary' : ''}}">
                                     <td><strong>#{{ $row->invoice }}</strong></td>
                                     <td>{{ $row->partner->name }}</td>
-                                    <td>{{ $row->partner->phone }}</td>
-                                    <td>Rp {{ number_format($row->grandtotal) }}</td>
-                                    <td>{{ $row->user->name }}</td>
-                                    <td>{{ $row->created_at->format('d-m-Y H:i:s') }}</td>
+                                    <td class="text-center">{{ $row->partner->phone }}</td>
+                                    <td class="text-right">{{ number_format($row->grandtotal) }}</td>
+                                    <td class="text-center">{{ $row->user->name }}</td>
+                                    <td class="text-center">{{ $row->dateordered }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('order.pdf', $row->invoice) }}" target="_blank"
                                             class="btn btn-primary btn-sm">

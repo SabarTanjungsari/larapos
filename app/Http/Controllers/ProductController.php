@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -44,8 +45,9 @@ class ProductController extends Controller
     {
         $categories = Category::orderBy('name', 'DESC')->get();
         $code = Str::random(10);
-
-        return view('products.create', compact('categories', 'code'));
+        $product = new Product();
+        $product['code'] = $code;
+        return view('products.product', compact('product', 'categories'));
     }
 
     /**
@@ -56,16 +58,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //validasi data
-        $this->validate($request, [
-            'code' => 'required|string|max:10|unique:products',
-            'name' => 'required|string|max:100',
-            'description' => 'nullable|string|max:100',
-            'stock' => 'required|integer',
-            'price' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
-            'photo' => 'nullable|image|mimes:jpg,png,jpeg'
-        ]);
+        $product = new Product(
+            $request->all()
+        );
+
+        $validator = Validator::make(
+            request()->all(),
+            $product->rules
+        );
+        $errors = $validator->errors();
+        if ($errors->any()) {
+            $categories = Category::orderBy('name', 'DESC')->get();
+            return view('products.product', compact('categories', 'product', 'errors'));
+        }
 
         try {
             //default $photo = null
@@ -136,7 +141,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $categories = Category::orderBy('name', 'ASC')->get();
-        return view('products.edit', compact('product', 'categories'));
+        return view('products.product', compact('product', 'categories'));
     }
 
     /**

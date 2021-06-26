@@ -27,14 +27,14 @@
                                         class="img-size-50 mr-3 img-circle" />
                                 </div>
                                 <div class="col-sm-9">
-                                    <h4 class="nomargin">{{ $details['name'] }}</h4>
+                                    <h4 class="nomargin">{{ $details['name'] . $details['stock']}}</h4>
                                 </div>
                             </div>
                         </td>
                         <td data-th="Price" class="text-right">{{ number_format($details['price']) }}</td>
                         <td data-th="Quantity" class="text-right">
                             <input type="number" value="{{ $details['quantity'] }}"
-                                class="form-control quantity update-cart" />
+                                class="form-control quantity update-cart {{ $details['stock'] < $details['quantity'] ? 'text-danger' : ''}}" />
                         </td>
                         <td data-th="Subtotal" class="text-right">
                             {{ number_format($details['price'] * $details['quantity']) }}</td>

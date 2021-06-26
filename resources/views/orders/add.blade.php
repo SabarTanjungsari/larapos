@@ -83,6 +83,11 @@
                                             <td>:</td>
                                             <td id="price"></td>
                                         </tr>
+                                        <tr>
+                                            <th>Stock</th>
+                                            <td>:</td>
+                                            <td id="stock"></td>
+                                        </tr>
                                     </table>
                                 </div>
 
@@ -127,7 +132,10 @@
                     accounting.formatMoney(data.price,  {
                         symbol: 'Rp. '
                     })
-                    );
+                );
+                $('#stock').html(
+                    accounting.toFixed(data.stock, 0)
+                );
                 $('#showImage').removeClass('d-none');
                 if(data.photo){
                     $('#photo').attr('src', APP_URL + '/uploads/product/' + data.photo);
