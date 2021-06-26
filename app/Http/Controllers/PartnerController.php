@@ -145,4 +145,20 @@ class PartnerController extends Controller
         return redirect(route('partners.index'))
             ->with(['success' => '<strong>' . $partner->name . '</strong> deleted successfully.']);
     }
+
+    /**
+     * API
+     */
+
+    public function getPartner($id)
+    {
+        $product = Partner::findOrFail($id);
+        return response()->json($product, 200);
+    }
+
+    public function getAllCustomer()
+    {
+        $products = Partner::where('iscustomer', true)->orderBy('name', 'ASC')->get();
+        return response()->json($products, 200);
+    }
 }

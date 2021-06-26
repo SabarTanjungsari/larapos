@@ -24,7 +24,7 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    {{$partner}}
+
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">

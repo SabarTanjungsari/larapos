@@ -36,7 +36,7 @@ class OrderController extends Controller
     {
         $partners = Partner::orderBy('name', 'ASC')->get();
         $users = User::orderBy('name', 'ASC')->get();
-        $orders = Order::orderBy('created_at', 'DESC')->with('orderline', 'partner');
+        $orders = Order::where('issotrx', true)->orderBy('created_at', 'DESC')->with('orderline', 'partner', 'user');
 
         # By Partner
         if (!empty($request->partner_id)) {
@@ -110,11 +110,11 @@ class OrderController extends Controller
         return $total;
     }
 
-    private function countItem($order)
+    private function countItem($orders)
     {
         $data = 0;
-        if ($order->count() > 0) {
-            foreach ($order as $row) {
+        if ($orders->count() > 0) {
+            foreach ($orders as $row) {
                 $qty = $row->orderline->pluck('qty')->all();
                 $val = array_sum($qty);
                 $data += $val;
@@ -215,24 +215,6 @@ class OrderController extends Controller
         return view('orders.add', compact('products'));
     }
 
-    public function getProduct($id)
-    {
-        $product = Product::findOrFail($id);
-        return response()->json($product, 200);
-    }
-
-    public function getPartner($id)
-    {
-        $product = Partner::findOrFail($id);
-        return response()->json($product, 200);
-    }
-
-    public function getAllPartner()
-    {
-        $products = Partner::orderBy('name', 'ASC')->get();
-        return response()->json($products, 200);
-    }
-
     public function addToCart($id)
     {
         $product = Product::findOrFail($id);
@@ -295,12 +277,16 @@ class OrderController extends Controller
     {
         $cart = session()->get('cart');
         if ($cart) {
-            return view('orders.checkout');
+            $date = date('Y-m-d');
+            return view('orders.checkout', compact('date'));
+        } else {
+            return redirect()->back()->with('error', 'Cart is empty.');
         }
     }
 
     public function storeOrder(Request $request)
     {
+        #dd($request->issotrx);
         $this->validate($request, [
             'email' => 'email|required',
             'name' => 'required|string|max:100',
@@ -332,8 +318,10 @@ class OrderController extends Controller
             $order = Order::create([
                 'invoice' => $this->generateInvoice(),
                 'partner_id' => $partner->id,
-                'user_id' => auth()->user()->id,
-                'grandtotal' => $total
+                'createdby' => auth()->user()->id,
+                'grandtotal' => $total,
+                'dateordered' => $request->dateordered,
+                'issotrx' => $request->issotrx
             ]);
             foreach ((array) session('cart') as $id => $item) {
                 $order->orderline()->create([
@@ -346,10 +334,6 @@ class OrderController extends Controller
             DB::commit();
             session()->forget('cart');
             return redirect()->route('order.transaction')->with('success', 'Order added successfully!');
-            #return response()->json([
-            #   'status' => 'success',
-            #  'message' => $partner
-            #], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([

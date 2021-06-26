@@ -102,7 +102,8 @@
                                                     data-name="{{ $partner->name }}" type="submit">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
-                                            </form>@endcan
+                                            </form>
+                                            @endcan
                                         </td>
                                         @endcan
                                     </tr>

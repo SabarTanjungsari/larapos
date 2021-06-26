@@ -95,7 +95,7 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>Invoice</th>
                                     <th>Partner</th>
                                     <th>Phone No</th>
@@ -108,14 +108,14 @@
                             <tbody>
                                 <!-- LOOPING MENGGUNAKAN FORELSE, DIRECTIVE DI LARAVEL 5.6 -->
                                 @forelse ($orders as $row)
-                                <tr>
+                                <tr class="{{$row->docstatus == 'CO' ? 'text-primary' : ''}}">
                                     <td><strong>#{{ $row->invoice }}</strong></td>
                                     <td>{{ $row->partner->name }}</td>
                                     <td>{{ $row->partner->phone }}</td>
                                     <td>Rp {{ number_format($row->grandtotal) }}</td>
                                     <td>{{ $row->user->name }}</td>
                                     <td>{{ $row->created_at->format('d-m-Y H:i:s') }}</td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="{{ route('order.pdf', $row->invoice) }}" target="_blank"
                                             class="btn btn-primary btn-sm">
                                             <i class="fa fa-print"></i>
@@ -124,6 +124,20 @@
                                             class="btn btn-info btn-sm">
                                             <i class="fa fa-file-excel"></i>
                                         </a>
+                                        @can('transaction-create')
+                                        <form style="display: inline"
+                                            action="{{ $row->docstatus == 'DR' ? route('transactions.store') : 'orders'}}"
+                                            method="POST">
+                                            @csrf
+                                            <input type="hidden" name="order_id" value="{{$row->id}}">
+
+                                            <button onclick="{{$row->docstatus == 'CO' ? 'this.disabled=true;' : ''}}"
+                                                class="btn btn-danger btn-sm {{$row->docstatus == 'CO' ? 'disabled' :''}}"
+                                                type="submit">
+                                                <i class="fa fa-spinner"></i>
+                                            </button>
+                                        </form>
+                                        @endcan
                                     </td>
                                 </tr>
                                 @empty
@@ -147,13 +161,18 @@
     $('#startdate').datepicker({
             autoclose: true,
             format: 'yyyy-mm-dd'
-        });
+    });
 
-        $('#enddate').datepicker({
+    $('#enddate').datepicker({
             autoclose: true,
             format: 'yyyy-mm-dd'
-        });
+    });
+
+    function process($id) {
+        console.log($id);
+    }
 </script>
+
 @endsection
 
 <!-- The Modal -->

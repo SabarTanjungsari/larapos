@@ -15,19 +15,20 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->date('dateordered');
             $table->string('invoice')->unique();
-            $table->bigInteger('partner_id');
-            $table->bigInteger('user_id');
+            $table->bigInteger('partner_id')->unsigned();
+            $table->bigInteger('createdby')->unsigned();
             $table->double('grandtotal');
+            $table->enum('docstatus', ['DR', 'CO', 'CL'])->default('DR');
+            $table->boolean('issotrx')->default(true);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->bigInteger('partner_id')->unsigned()->change();
             $table->foreign('partner_id')->references('id')->on('partners')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->bigInteger('user_id')->unsigned()->change();
-            $table->foreign('user_id')->references('id')->on('users')
+            $table->foreign('createdby')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

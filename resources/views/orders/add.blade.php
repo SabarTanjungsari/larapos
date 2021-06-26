@@ -32,6 +32,9 @@
     <!-- Main content -->
     <section class="content" id="dw">
         <div class="container-fluid">
+            @if (session('error'))
+            <x-alert type="danger">{!! session('error') !!}</x-alert>
+            @endif
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-md-4">
@@ -51,24 +54,12 @@
                                         </select>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="">Qty</label>
-                                                <input type="text" name="qty" id="qty" value="1" min="1"
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="">&nbsp;</label>
-                                                <a href="" id="addCart"
-                                                    class="btn btn-primary btn-md btn-flat form-control">
-                                                    <i class="fas fa-cart-plus fa-lg mr-2"></i>
-                                                    Add to Cart
-                                                </a>
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="">&nbsp;</label>
+                                        <a href="" id="addCart" class="btn btn-primary btn-block">
+                                            <i class="fas fa-cart-plus fa-lg mr-2"></i>
+                                            Add to Cart
+                                        </a>
                                     </div>
                                 </form>
 
@@ -120,13 +111,40 @@
 <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('js/accounting.min.js') }}"></script>
-<script src="{{ asset('js/transaction.js') }}"></script>
 <script type="text/javascript">
+    function getDetailProduct() {
+    var id = $('[name="product_id"]').val();
+
+    if (id != '') {
+        $.ajax({
+            url: APP_URL + "/api/product/" + id,
+            type: "GET",
+            dataType: "JSON",
+            success: function (data) {
+                $('#addCart').attr('href', APP_URL + '/add-to-cart/' + id);
+                $('#name').html(data.code + '# ' + data.name);
+                $('#price').html(
+                    accounting.formatMoney(data.price,  {
+                        symbol: 'Rp. '
+                    })
+                    );
+                $('#showImage').removeClass('d-none');
+                if(data.photo){
+                    $('#photo').attr('src', APP_URL + '/uploads/product/' + data.photo);
+                } else {
+                    $('#photo').attr('src', APP_URL + '/dist/img/50x50.png');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Error get data from ajax");
+            },
+        });
+    }
+}
+
     $(".update-cart").change(function (e) {
         e.preventDefault();
-
         var ele = $(this);
-
         $.ajax({
             url: '{{ route('update.cart') }}',
             method: "patch",
@@ -140,11 +158,9 @@
             }
         });
     });
-
     $(".remove-from-cart").click(function (e) {
         var ele = $(this);
         var currentRow=$(this).closest("tr");
-
         Swal.fire({
         title: 'Are you sure delete ?',
         text: currentRow.find("td:eq(0)").text(),
@@ -169,14 +185,10 @@
                 }
             })
     });
-
     $(".checkout-cart").click(function (e) {
         e.preventDefault();
-
         var ele = $(this);
-
         $('#checkoutCart').attr('href', APP_URL + 'checkout-cart');
     });
-
 </script>
 @endsection

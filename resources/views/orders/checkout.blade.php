@@ -44,7 +44,7 @@
                                     <div class="form-group">
                                         <label for="">Customer</label>
                                         <select class="form-control form-control-sm myselect"
-                                            onchange="getDetailPartner()" name="partner_id" id="partner_id">
+                                            onchange="getDetailPartner()" name="customer_id" id="customer_id">
                                         </select>
                                     </div>
                                     <div>
@@ -60,9 +60,22 @@
                                         <label for="">Email</label>
                                         <input type="email" name="email" id="email" class="form-control input-sm">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="">Phone No.</label>
-                                        <input type="text" name="phone" id="phone" class="form-control input-sm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Phone No.</label>
+                                                <input type="text" name="phone" id="phone"
+                                                    class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Date</label>
+                                                <input type="date" name="dateordered" class="form-control input-sm"
+                                                    value="{{$date}}">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="issotrx" value="true">
                                     </div>
                                 </div>
                             </div>
@@ -93,14 +106,13 @@
 <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('js/accounting.min.js') }}"></script>
-<script src="{{ asset('js/transaction.js') }}"></script>
 <script type="text/javascript">
     $.ajax({
-        url: '{{ route('partner') }}',
+        url: '{{ route('customer') }}',
         type: "GET",
         dataType: "JSON",
         success: function(data) {
-            var dropdownRequest = $("#partner_id");
+            var dropdownRequest = $("#customer_id");
             dropdownRequest.empty();
             $("<option></option>").attr("value", "").text("- Select -")
             $.each(data, function(key, entry) {
@@ -115,7 +127,7 @@
     });
 
     function getDetailPartner() {
-        var id = $('[name="partner_id"]').val();
+        var id = $('[name="customer_id"]').val();
 
         if (id != '') {
             $.ajax({

@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 #    return $request->user();
 #});
 
-Route::get('/product/{id}', [OrderController::class, 'getProduct']);
-Route::get('/partner/{id}', [OrderController::class, 'getPartner']);
-Route::get('/partner', [OrderController::class, 'getAllPartner'])->name('partner');
+Route::get('/product/{id}', [ProductController::class, 'getProduct']);
+Route::get('/partner/{id}', [PartnerController::class, 'getPartner']);
+Route::get('/customer', [PartnerController::class, 'getAllCustomer'])->name('customer');
 Route::get('/chart', [HomeController::class, 'getChart']);

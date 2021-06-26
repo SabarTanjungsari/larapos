@@ -6,7 +6,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +41,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/categories', CategoryController::class);
     Route::resource('/products', ProductController::class);
     Route::resource('/partners', PartnerController::class);
+
+    Route::resource('/transactions', TransactionController::class);
 
     Route::get('/transaction', [OrderController::class, 'addOrder'])->name('order.transaction');
     Route::get('add-to-cart/{id}', [OrderController::class, 'addToCart'])->name('add.to.cart');

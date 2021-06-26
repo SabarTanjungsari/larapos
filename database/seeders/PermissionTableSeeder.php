@@ -44,6 +44,11 @@ class PermissionTableSeeder extends Seeder
             'partner-delete',
             'cart-list',
             'sales-list',
+            'transaction-list',
+            'transaction-show',
+            'transaction-create',
+            'transaction-edit',
+            'transaction-delete',
         ];
 
         foreach ($permissions as $permission) {

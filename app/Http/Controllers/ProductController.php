@@ -198,4 +198,14 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->back()->with(['success' => '<strong>' . $product->name . '</strong> Deleted.']);
     }
+
+    /**
+     * API
+     */
+
+    public function getProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        return response()->json($product, 200);
+    }
 }
