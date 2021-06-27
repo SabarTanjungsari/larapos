@@ -6,10 +6,24 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+        $this->middleware('permission:user-list', ['only' => ['index', 'show']]);
+        $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -108,7 +122,11 @@ class UserController extends Controller
             'password' => $password
         ]);
 
-        return redirect(route('users.index'))->with(['success' => 'User : <strong>' . $user->name . '</strong> Updated.']);
+        if (auth()->user()->can('user-list')) {
+            return redirect(route('users.index'))->with(['success' => 'User : <strong>' . $user->name . '</strong> Updated.']);
+        } else {
+            return redirect('login')->with(Auth::logout());
+        }
     }
 
     /**

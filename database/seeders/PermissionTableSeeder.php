@@ -36,7 +36,6 @@ class PermissionTableSeeder extends Seeder
             'product-create',
             'product-edit',
             'product-delete',
-            'partner-index',
             'partner-list',
             'partner-show',
             'partner-create',

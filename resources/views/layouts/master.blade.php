@@ -133,8 +133,8 @@
                                 alt="User Image">
 
                             <p>
-                                {{ Auth::user()->name }} - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                {{ Auth::user()->name }} - {{ Auth::user()->roles[0]['name'] }}
+                                <small>Member since {{ date('d F Y', strtotime(Auth::user()->created_at)) }}</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -154,7 +154,8 @@
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <a href="#" class="btn btn-default btn-flat">Profile</a>
+                            <a href="{{ route('users.edit', Auth::user()->id) }}"
+                                class="btn btn-default btn-flat">Profile</a>
                             <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 class="btn btn-default btn-flat float-right">

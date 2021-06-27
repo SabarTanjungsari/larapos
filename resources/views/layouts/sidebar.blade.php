@@ -113,12 +113,14 @@
                 @endcan
 
                 <li class="nav-header">SETTINGS</li>
+                @can('system-list')
                 <li class="nav-item">
                     <a href=" {{ route('system.index') }}" class="nav-link">
                         <i class="fa fa-cog nav-icon text-indigo"></i>
                         <p>Setting</p>
                     </a>
                 </li>
+                @endcan
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
