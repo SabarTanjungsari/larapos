@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -42,8 +44,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $user = new User();
         $roles = Role::orderBy('name', 'ASC')->get();
-        return view('users.create', compact('roles'));
+        return view('users.user', compact('roles', 'user'));
     }
 
     /**
@@ -54,27 +57,61 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string|max:100',
-            'email' => 'required||email|unique:users',
-            'password' => 'required|min:6',
-            'role' => 'required|string|exists:roles,name'
-        ]);
+        $user = new User($request->all());
+        $validator = Validator::make($request->all(), $user->rules);
+        $errors = $validator->errors();
+        $user['role'] = $request->role;
 
-        $user = User::firstOrCreate(
-            [
-                'email' => $request->email
-            ],
-            [
+        if ($errors->any()) {
+            $roles = Role::orderBy('name', 'ASC')->get();
+            return view('users.user', compact('roles', 'user', 'errors'));
+        }
+
+        try {
+            //default $photo = null
+            $photo = null;
+            //jika terdapat file (Foto / Gambar) yang dikirim
+            if ($request->hasFile('photo')) {
+                //maka menjalankan method saveFile()
+                $photo = $this->saveFile($request->name, $request->file('photo'));
+            }
+
+            $user = User::create([
+                'email' => $request->email,
                 'name' => $request->name,
                 'password' => bcrypt($request->password),
-                'status' => 't'
-            ]
-        );
+                'status' => 't',
+                'photo' => $photo
+            ]);
+            $user->assignRole($request->role);
 
-        $user->assignRole($request->role);
-        return redirect(route('users.index'))->with(['success' => 'User : <strong>' . $user->name . $user->status . '</strong> Added.']);
+            //jika berhasil direct ke produk.index
+            return redirect(route('users.index'))->with(['success' => 'User : <strong>' . $user->name . $user->status . '</strong> Added.']);
+        } catch (\Exception $e) {
+            //jika gagal, kembali ke halaman sebelumnya kemudian tampilkan error
+            return redirect()->back()
+                ->with(['error' => $e->getMessage()]);
+        }
     }
+
+    /**
+     * Save the specified photo.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function saveFile($name, $photo)
+    {
+        //set nama file adalah gabungan antara nama produk dan time(). Ekstensi gambar tetap dipertahankan
+        $images = Str::slug($name) . time() . '.' . $photo->getClientOriginalExtension();
+        //set path untuk menyimpan gambar
+        $path = public_path('uploads/user');
+
+        Image::make($photo)->save($path . '/' . $images);
+
+        return $images;
+    }
+
 
     /**
      * Display the specified resource.
@@ -95,8 +132,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return view('users.edit', compact('user'));
+        $user = User::find($id);
+        $roles = Role::orderBy('name', 'ASC')->get();
+        $role = $user->roles()->pluck('name');
+        $user['role'] = $user->roles[0]['name'];
+
+        return view('users.user', compact('user', 'roles'));
     }
 
     /**
@@ -108,26 +149,57 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|exists:users,email',
-            'password' => 'nullable|min:6'
-        ]);
+        $user = new User(
+            $request->all()
+        );
+
+        $rules = $user->rules;
+        $rules['email'] = $rules['email'] . ',email,' . $id;
+        $rules['password'] = 'nullable';
+        $validator = Validator::make(
+            request()->all(),
+            $rules
+        );
+        $errors = $validator->errors();
+        if ($errors->any()) {
+            $roles = Role::orderBy('name', 'ASC')->get();
+            return view('users.user', compact('user', 'roles', 'errors'));
+        }
 
         $user = User::findOrFail($id);
         $password = !empty($request->password) ? bcrypt($request->password) : $user->password;
 
-        $user->update([
-            'name' => $request->name,
-            'password' => $password
-        ]);
+        try {
+            $user = User::findOrFail($id);
+            $photo = $user->photo;
 
-        if (auth()->user()->can('user-list')) {
-            return redirect(route('users.index'))->with(['success' => 'User : <strong>' . $user->name . '</strong> Updated.']);
-        } else {
-            return redirect('login')->with(Auth::logout());
+            if ($request->hasFile('photo')) {
+                !empty($photo) ? File::delete(public_path('uploads/user/' . $user->photo)) : null;
+
+                $photo = $this->saveFile($request->name, $request->file('photo'));
+            }
+
+            $user->update([
+                'name' => $request->name,
+                'password' => $password,
+                'email' => $request->email,
+                'photo' => $photo
+            ]);
+            if ($user->roles[0]['name'] != $request->role) {
+                $user->removeRole($user->roles[0]['name']);
+                $user->assignRole($request->role);
+            }
+
+            if (auth()->user()->can('user-list')) {
+                return redirect(route('users.index'))->with(['success' => 'User : <strong>' . $user->name . '</strong> Updated.']);
+            } else {
+                return redirect('login')->with(Auth::logout());
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => $e->getMessage()]);
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

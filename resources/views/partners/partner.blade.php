@@ -35,7 +35,7 @@
                         @slot('title')
                         @endslot
 
-                        <form class="disabled"
+                        <form
                             action="{{ $partner->id == null ? route('partners.store') : route('partners.update', $partner->id) }}"
                             method="post">
                             @csrf

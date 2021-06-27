@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'status',
+        'photo'
     ];
 
     /**
@@ -42,6 +43,14 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+
+    public $rules = [
+        'name' => 'required|string|max:100',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:6',
+        'role' => 'required|string|exists:roles,name'
     ];
 
     public function getNameAttribute($value)
