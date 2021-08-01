@@ -20,12 +20,11 @@ class CreateProductsTable extends Migration
             $table->string('description')->nullable();
             $table->integer('stock');
             $table->double('price');
-            $table->bigInteger('category_id');
+            $table->bigInteger('category_id')->unsigned();
             $table->char('code', 10)->unique();
             $table->string('photo')->nullable();
             $table->timestamps();
 
-            $table->bigInteger('category_id')->unsigned()->change();
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
         });
     }
