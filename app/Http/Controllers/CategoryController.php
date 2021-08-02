@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWritter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class CategoryController extends Controller
 {
@@ -132,6 +133,21 @@ class CategoryController extends Controller
      */
     public function export()
     {
+
+        $styleBorder = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN //fine border
+                ]
+            ]
+        ];
+
+        $styleBold = [
+            'font' => [
+                'bold' => true
+            ]
+        ];
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -139,6 +155,7 @@ class CategoryController extends Controller
         $sheet->setCellValue('B1', 'Category Name');
         $sheet->setCellValue('C1', 'Active');
         $sheet->setCellValue('D1', 'Description');
+        $sheet->getStyle('A1:D1')->applyFromArray($styleBold);
 
         $categories = Category::all();
         $cell = 2;
@@ -147,7 +164,13 @@ class CategoryController extends Controller
             $sheet->setCellValue('B' . $cell, $category->name);
             $sheet->setCellValue('C' . $cell, $category->isactive);
             $sheet->setCellValue('D' . $cell, $category->description);
+
+            $sheet->getStyle('A1' . ':D' . $cell)->applyFromArray($styleBorder);
             $cell++;
+        }
+
+        foreach (range('A', 'D') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 
         $writter = new XlsxWritter($spreadsheet);
