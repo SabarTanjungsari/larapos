@@ -42,7 +42,10 @@ Route::group(['middleware' => 'auth'], function () {
         'show', 'store', 'destroy', 'create'
     ]);
 
-    Route::resource('/categories', CategoryController::class);
+    Route::resource('/categories', CategoryController::class)->except(['create', 'show']);
+    Route::get('/categories/export', [CategoryController::class, 'export'])->name('export.category');
+    Route::post('/categories/import', [CategoryController::class, 'import'])->name('import.category');
+
     Route::resource('/products', ProductController::class);
     Route::resource('/partners', PartnerController::class);
 
