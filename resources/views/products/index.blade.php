@@ -11,7 +11,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Product Management</h1>
+                    <h1 class="m-0">Product Management
+                        <a href="{{ route('product.export') }}" class="btn btn-outline-info btn-sm">
+                                <i class="fa fa-file-download"></i>
+                            </a>
+                    </h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">

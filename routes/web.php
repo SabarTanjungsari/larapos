@@ -43,10 +43,13 @@ Route::group(['middleware' => 'auth'], function () {
     ]);
 
     Route::resource('/categories', CategoryController::class)->except(['create', 'show']);
-    Route::get('/categories/export', [CategoryController::class, 'export'])->name('export.category');
-    Route::post('/categories/import', [CategoryController::class, 'import'])->name('import.category');
+    Route::get('/category/export', [CategoryController::class, 'export'])->name('category.export');
+    Route::post('/category/import', [CategoryController::class, 'import'])->name('category.import');
 
     Route::resource('/products', ProductController::class);
+    Route::get('/product/export', [ProductController::class, 'export'])->name('product.export');
+    Route::post('/product/import', [CategoryController::class, 'import'])->name('product.import');
+
     Route::resource('/partners', PartnerController::class);
 
     Route::resource('/transactions', TransactionController::class);

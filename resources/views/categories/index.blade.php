@@ -12,7 +12,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0">Management Category
-                            <a href="{{ route('export.category') }}" class="btn btn-outline-info btn-sm">
+                            <a href="{{ route('category.export') }}" class="btn btn-outline-info btn-sm">
                                 <i class="fa fa-file-download"></i>
                             </a>
                             <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal"
@@ -138,7 +138,7 @@
                         Filter Transaction
                     @endslot
 
-                    <form role="form" method="post" action="{{ route('import.category') }}"
+                    <form role="form" method="post" action="{{ route('category.import') }}"
                         enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group">
