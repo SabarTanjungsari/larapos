@@ -39,10 +39,6 @@
                 <div class="row">
                     <div class="col-md-4">
                         <x-card title="Add" footer="Save">
-                            @if (session('error'))
-                                <x-alert type="info">{!! session('error') !!}</x-alert>
-                            @endif
-
                             <form role="form" action="{{ route('categories.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
@@ -74,7 +70,9 @@
                             @if (session('success'))
                                 <x-alert type="success">{!! session('success') !!}</x-alert>
                             @endif
-
+                            @if (session('error'))
+                                <x-alert type="danger">{!! session('error') !!}</x-alert>
+                            @endif
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -114,6 +112,9 @@
                                         @endforelse
                                     </tbody>
                                 </table>
+                                <div class="d-flex justify-content-center">
+                                    {!! $categories->links() !!}
+                                </div>
                             </div>
                         </x-card>
                     </div>

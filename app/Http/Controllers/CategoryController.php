@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWritter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
@@ -150,26 +151,25 @@ class CategoryController extends Controller
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('CATEGORY DATA');
 
-        $sheet->setCellValue('A1', 'ID');
-        $sheet->setCellValue('B1', 'Category Name');
-        $sheet->setCellValue('C1', 'Active');
-        $sheet->setCellValue('D1', 'Description');
-        $sheet->getStyle('A1:D1')->applyFromArray($styleBold);
+        $sheet->setCellValue('A1', 'Category Name');
+        $sheet->setCellValue('B1', 'Active');
+        $sheet->setCellValue('C1', 'Description');
+        $sheet->getStyle('A1:C1')->applyFromArray($styleBold);
 
         $categories = Category::all();
         $cell = 2;
         foreach ($categories as $category) {
-            $sheet->setCellValue('A' . $cell, $category->id);
-            $sheet->setCellValue('B' . $cell, $category->name);
-            $sheet->setCellValue('C' . $cell, $category->isactive);
-            $sheet->setCellValue('D' . $cell, $category->description);
+            $sheet->setCellValue('A' . $cell, $category->name);
+            $sheet->setCellValue('B' . $cell, $category->isactive);
+            $sheet->setCellValue('C' . $cell, $category->description);
 
-            $sheet->getStyle('A1' . ':D' . $cell)->applyFromArray($styleBorder);
+            $sheet->getStyle('A1' . ':C' . $cell)->applyFromArray($styleBorder);
             $cell++;
         }
 
-        foreach (range('A', 'D') as $columnID) {
+        foreach (range('A', 'C') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 
@@ -207,21 +207,26 @@ class CategoryController extends Controller
                 $startRow = 1;
                 $data = [];
                 for ($i = $startRow; $i < count($sheetData); $i++) {
-                    $id = $sheetData[$i]['0'];
-                    $name = $sheetData[$i]['1'];
-                    $active = $sheetData[$i]['2'];
-                    $description = $sheetData[$i]['3'];
+                    $name = $sheetData[$i]['0'];
+                    $active = $sheetData[$i]['1'];
+                    $description = $sheetData[$i]['2'];
                     $row = [
-                        'id' => $id,
                         'name' => $name,
                         'isactive' => $active,
                         'description' => $description
                     ];
                     array_push($data, $row);
                 }
-
-                Category::insert($data);
             }
+        }
+
+        DB::beginTransaction();
+        try {
+            Category::insert($data);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with(['error' => $e->getMessage()]);
         }
 
         return redirect()->back()->with(['success' => 'Import Successed.']);

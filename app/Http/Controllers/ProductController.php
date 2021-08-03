@@ -229,33 +229,31 @@ class ProductController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Product');
 
-        $sheet->setCellValue('A1', 'ID');
-        $sheet->setCellValue('B1', 'Produst Name');
-        $sheet->setCellValue('C1', 'Active');
-        $sheet->setCellValue('D1', 'Description');
-        $sheet->setCellValue('E1', 'Stock');
-        $sheet->setCellValue('F1', 'Price');
-        $sheet->setCellValue('G1', 'Code');
-        $sheet->setCellValue('H1', 'ID Category');
-        $sheet->setCellValue('I1', 'Category Name');
-        $sheet->getStyle('A1:I1')->applyFromArray($styleBold);
+        $sheet->setCellValue('A1', 'Produst Name');
+        $sheet->setCellValue('B1', 'Active');
+        $sheet->setCellValue('C1', 'Description');
+        $sheet->setCellValue('D1', 'Stock');
+        $sheet->setCellValue('E1', 'Price');
+        $sheet->setCellValue('F1', 'Code');
+        $sheet->setCellValue('G1', 'ID Category');
+        $sheet->setCellValue('H1', 'Category Name');
+        $sheet->getStyle('A1:H1')->applyFromArray($styleBold);
 
         $products = Product::with('category')->get();
 
         $cell = 2;
         foreach ($products as $product) {
-            $sheet->setCellValue('A' . $cell, $product->id);
-            $sheet->setCellValue('B' . $cell, $product->name);
-            $sheet->setCellValue('C' . $cell, $product->isactive);
-            $sheet->setCellValue('D' . $cell, $product->description);
-            $sheet->setCellValue('E' . $cell, $product->stock);
-            $sheet->setCellValue('F' . $cell, $product->price);
-            $sheet->setCellValue('G' . $cell, $product->code);
-            $sheet->setCellValue('H' . $cell, $product->category->id);
-            $sheet->setCellValue('I' . $cell, $product->category->name);
+            $sheet->setCellValue('A' . $cell, $product->name);
+            $sheet->setCellValue('B' . $cell, $product->isactive);
+            $sheet->setCellValue('C' . $cell, $product->description);
+            $sheet->setCellValue('D' . $cell, $product->stock);
+            $sheet->setCellValue('E' . $cell, $product->price);
+            $sheet->setCellValue('F' . $cell, $product->code);
+            $sheet->setCellValue('G' . $cell, $product->category->id);
+            $sheet->setCellValue('H' . $cell, $product->category->name);
 
-            $sheet->getStyle('A1' . ':I' . $cell)->applyFromArray($styleBorder);
-            $sheet->getStyle('E' . $cell . ':F' . $cell)->getNumberFormat()->setFormatCode('#,##0.00');;
+            $sheet->getStyle('A1' . ':H' . $cell)->applyFromArray($styleBorder);
+            $sheet->getStyle('D' . $cell . ':E' . $cell)->getNumberFormat()->setFormatCode('#,##0.00');;
             $cell++;
         }
 
@@ -272,8 +270,7 @@ class ProductController extends Controller
         $sheet->setCellValue('A1', 'ID');
         $sheet->setCellValue('B1', 'Category Name');
         $sheet->setCellValue('C1', 'Active');
-        $sheet->setCellValue('D1', 'Description');
-        $sheet->getStyle('A1:D1')->applyFromArray($styleBold);
+        $sheet->getStyle('A1:C1')->applyFromArray($styleBold);
 
         $categories = Category::all();
         $cell = 2;
@@ -281,16 +278,16 @@ class ProductController extends Controller
             $sheet->setCellValue('A' . $cell, $category->id);
             $sheet->setCellValue('B' . $cell, $category->name);
             $sheet->setCellValue('C' . $cell, $category->isactive);
-            $sheet->setCellValue('D' . $cell, $category->description);
 
-            $sheet->getStyle('A1' . ':D' . $cell)->applyFromArray($styleBorder);
+            $sheet->getStyle('A1' . ':C' . $cell)->applyFromArray($styleBorder);
             $cell++;
         }
 
-        foreach (range('A', 'D') as $columnID) {
+        foreach (range('A', 'C') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 
+        $spreadsheet->setActiveSheetIndex(0);
         $writter = new XlsxWritter($spreadsheet);
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename=products.xlsx');
