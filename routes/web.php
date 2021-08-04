@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/products', ProductController::class);
     Route::get('/product/export', [ProductController::class, 'export'])->name('product.export');
-    Route::post('/product/import', [CategoryController::class, 'import'])->name('product.import');
+    Route::post('/product/import', [ProductController::class, 'import'])->name('product.import');
 
     Route::resource('/partners', PartnerController::class);
 

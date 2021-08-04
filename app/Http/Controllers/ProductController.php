@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -36,7 +37,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->orderBy('created_at', 'DESC')->paginate(2);
+        $products = Product::with('category')->orderBy('created_at', 'DESC')->paginate(10);
         return view('products.index', compact('products'));
     }
 
@@ -265,7 +266,7 @@ class ProductController extends Controller
         # Category
         $spreadsheet->createSheet();
         $sheet = $spreadsheet->setActiveSheetIndex(1);
-        $sheet->setTitle('category');
+        $sheet->setTitle('Category');
 
         $sheet->setCellValue('A1', 'ID');
         $sheet->setCellValue('B1', 'Category Name');
@@ -292,6 +293,68 @@ class ProductController extends Controller
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename=products.xlsx');
         $writter->save('php://output');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param
+     * @return \Illuminate\Http\Response
+     */
+    public function import(Request $request)
+    {
+        if ($_POST) {
+            $request->validate([
+                'file' => 'required|mimes:xlsx|max:1000'
+            ]);
+
+            $file = $request->file('file');
+            $name = time() . '.xlsx';
+            $path = public_path('documents' . DIRECTORY_SEPARATOR);
+
+            if ($file->move($path, $name)) {
+                $inputFileName = $path . $name;
+                $reader = new XlsxReader();
+                $reader->setReadDataOnly(true);
+                $reader->setLoadSheetsOnly(["Product"]);
+                $spreadsheet = $reader->load($inputFileName);
+                $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+                $startRow = 1;
+                $data = [];
+                for ($i = $startRow; $i < count($sheetData); $i++) {
+                    $name = $sheetData[$i]['0'];
+                    $active = $sheetData[$i]['1'];
+                    $description = $sheetData[$i]['2'];
+                    $stock = $sheetData[$i]['3'];
+                    $price = $sheetData[$i]['4'];
+                    $code = $sheetData[$i]['5'];
+                    $category_id = $sheetData[$i]['6'];
+                    $row = [
+                        'name' => $name,
+                        'isactive' => $active,
+                        'description' => $description,
+                        'stock' => $stock,
+                        'price' => $price,
+                        'code' => $code,
+                        'category_id' => $category_id
+                    ];
+                    array_push($data, $row);
+                }
+            }
+        }
+
+        DB::beginTransaction();
+        try {
+            Product::insert($data);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with(['error' => $e->getMessage()]);
+        }
+
+        return redirect(route('products.index'))
+            ->with(['success' => '<strong>Import Product </strong> successed.']);
     }
 
     /**

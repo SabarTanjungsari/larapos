@@ -15,6 +15,10 @@
                             <a href="{{ route('product.export') }}" class="btn btn-outline-info btn-sm">
                                 <i class="fa fa-file-download"></i>
                             </a>
+                            <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal"
+                                data-target="#myModal">
+                                <i class="fa fa-file-upload"></i>
+                            </button>
                         </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
@@ -46,7 +50,9 @@
                             @if (session('success'))
                                 <x-alert type="success">{!! session('success') !!}</x-alert>
                             @endif
-
+                            @if (session('error'))
+                                <x-alert type="danger">{!! session('error') !!}</x-alert>
+                            @endif
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -123,4 +129,35 @@
         </section>
         <!-- /.content -->
     </div>
+@endsection
+
+<!-- The Modal -->
+@section('modal')
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg   ">
+        <div class="modal-content">
+
+            <div class="col-md-12">
+                <x-card title="" footer="">
+                    @slot('title')
+                        Filter Transaction
+                    @endslot
+
+                    <form role="form" method="post" action="{{ route('product.import') }}"
+                        enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <label>Document (.xlsx) <small style="color: red">*</small></label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Upload</button>
+                        </div>
+                    </form>
+                </x-card>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
