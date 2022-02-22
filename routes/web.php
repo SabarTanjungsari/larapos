@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -64,6 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/order', [OrderController::class, 'index'])->name('order.index');
     Route::get('/order/pdf/{invoice}', [OrderController::class, 'invoicePdf'])->name('order.pdf');
     Route::get('/order/excel/{invoice}', [OrderController::class, 'invoiceExcel'])->name('order.excel');
+
+    Route::resource('/cashiers', CashierController::class);
 });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

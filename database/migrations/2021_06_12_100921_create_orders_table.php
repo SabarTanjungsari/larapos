@@ -25,11 +25,8 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('partner_id')->references('id')->on('partners')
-                ->onUpdate('cascade')->onDelete('cascade');
-
-            $table->foreign('createdby')->references('id')->on('users')
-                ->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreign('partner_id')->references('id')->on('partners')->onDelete('cascade');
+            //$table->foreign('createdby')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

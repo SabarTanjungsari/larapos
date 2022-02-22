@@ -57,8 +57,8 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <td>#</td>
-                                            <td>Name</td>
+                                            <td>Barcode</td>
+                                            <td colspan="2">Name</td>
                                             <td>Stock</td>
                                             <td>Price</td>
                                             <td>Category</td>
@@ -67,8 +67,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($products as $product )
+                                        @forelse ($products as $product)
                                             <tr>
+                                                <td class="text-center">
+                                                    <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($product->code, 'C93') }}"
+                                                        alt="barcode" />
+                                                    <sup class="text text-success">{{ $product->code }}</sup>
+                                                </td>
                                                 <td>
                                                     @if (!empty($product->photo))
                                                         <img src="{{ asset('uploads/product/' . $product->photo) }}"
@@ -79,7 +84,6 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <sup class="text text-success">{{ $product->code }}</sup>
                                                     <strong>{{ ucfirst($product->name) }}</strong>
                                                 </td>
                                                 <td class="text-right {{ $product->stock <= 0 ? 'text-danger' : '' }}">
@@ -133,31 +137,31 @@
 
 <!-- The Modal -->
 @section('modal')
-<div class="modal" id="myModal">
-    <div class="modal-dialog modal-lg   ">
-        <div class="modal-content">
+    <div class="modal" id="myModal">
+        <div class="modal-dialog modal-lg   ">
+            <div class="modal-content">
 
-            <div class="col-md-12">
-                <x-card title="" footer="">
-                    @slot('title')
-                        Filter Transaction
-                    @endslot
+                <div class="col-md-12">
+                    <x-card title="" footer="">
+                        @slot('title')
+                            Filter Transaction
+                        @endslot
 
-                    <form role="form" method="post" action="{{ route('product.import') }}"
-                        enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label>Document (.xlsx) <small style="color: red">*</small></label>
-                            <input type="file" name="file" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">Upload</button>
-                        </div>
-                    </form>
-                </x-card>
+                        <form role="form" method="post" action="{{ route('product.import') }}"
+                            enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label>Document (.xlsx) <small style="color: red">*</small></label>
+                                <input type="file" name="file" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Upload</button>
+                            </div>
+                        </form>
+                    </x-card>
+                </div>
+
             </div>
-
         </div>
     </div>
-</div>
 @endsection

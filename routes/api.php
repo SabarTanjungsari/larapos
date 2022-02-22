@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\ApiProduct;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductController;
@@ -22,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 #});
 
 Route::get('/product/{id}', [ProductController::class, 'getProduct']);
+Route::get('/products/{code}', [ApiProduct::class, 'getByCode']);
+
 Route::get('/partner/{id}', [PartnerController::class, 'getPartner']);
 Route::get('/customer', [PartnerController::class, 'getAllCustomer'])->name('customer');
 Route::get('/chart', [HomeController::class, 'getChart']);

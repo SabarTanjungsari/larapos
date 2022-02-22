@@ -8,7 +8,7 @@
     @yield('title')
 
     <script>
-        window.APP_URL = '{{ config('app.url')}}';
+        window.APP_URL = '{{ config('app.url') }}';
     </script>
 
     <!-- Google Font: Source Sans Pro -->
@@ -43,8 +43,8 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60"
-                width="60">
+            <img class="animation__shake" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo"
+                height="60" width="60">
         </div>
 
         <!-- Navbar -->
@@ -52,7 +52,8 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
+                            class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -70,67 +71,70 @@
 
                 <!-- Cart Dropdown Menu -->
                 <li class="nav-item dropdown">
-                    @php $total = 0; $qty = 0; @endphp
-                    @foreach((array) session('cart') as $id => $details)
                     @php
-                    $total += $details['price'] * $details['quantity'];
-                    $qty += $details['quantity'];
+                        $total = 0;
+                        $qty = 0;
                     @endphp
+                    @foreach ((array) session('cart') as $id => $details)
+                        @php
+                            $total += $details['price'] * $details['quantity'];
+                            $qty += $details['quantity'];
+                        @endphp
                     @endforeach
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="badge badge-danger navbar-badge">{{ $qty }}</span>
                     </a>
 
-                    @if(session('cart'))
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        @foreach(session('cart') as $id => $item)
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
+                    @if (session('cart'))
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            @foreach (session('cart') as $id => $item)
+                                <a href="#" class="dropdown-item">
+                                    <!-- Message Start -->
+                                    <div class="media">
 
-                                @if (!empty($item['photo']))
-                                <img src="{{ asset('uploads/product/'. $item['photo'])}}" alt="User Avatar"
-                                    class="img-size-50 mr-3 img-circle">
+                                        @if (!empty($item['photo']))
+                                            <img src="{{ asset('uploads/product/' . $item['photo']) }}"
+                                                alt="User Avatar" class="img-size-50 mr-3 img-circle">
 
-                                @else
-                                <img src="http://via.placeholder.com/50x50" alt="User Avatar"
-                                    class="img-size-50 mr-3 img-circle">
-                                @endif
+                                        @else
+                                            <img src="http://via.placeholder.com/50x50" alt="User Avatar"
+                                                class="img-size-50 mr-3 img-circle">
+                                        @endif
 
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        {{ $item['name'] }}
-                                        <span class="float-right text-sm text-primary"><i
-                                                class="fas fa-check"></i></span>
-                                    </h3>
-                                    <p class="text-sm">{{ $item['quantity'] }}</p>
-                                    <p class="text-sm text-muted">
-                                        Rp. {{ number_format($item['price'])}}</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        @endforeach
+                                        <div class="media-body">
+                                            <h3 class="dropdown-item-title">
+                                                {{ $item['name'] }}
+                                                <span class="float-right text-sm text-primary"><i
+                                                        class="fas fa-check"></i></span>
+                                            </h3>
+                                            <p class="text-sm">{{ $item['quantity'] }}</p>
+                                            <p class="text-sm text-muted">
+                                                Rp. {{ number_format($item['price']) }}</p>
+                                        </div>
+                                    </div>
+                                    <!-- Message End -->
+                                </a>
+                            @endforeach
 
-                        <a href="{{ route('order.transaction') }}" class="dropdown-item dropdown-footer">Rp.
-                            {{ number_format($total) }}
-                        </a>
-                    </div>
+                            <a href="{{ route('order.transaction') }}" class="dropdown-item dropdown-footer">Rp.
+                                {{ number_format($total) }}
+                            </a>
+                        </div>
                     @endif
                 </li>
 
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ empty(Auth::user()->photo) ? asset('/dist/img/user2-160x160.jpg') : asset('uploads/user/'. Auth::user()->photo)}}"
+                        <img src="{{ empty(Auth::user()->photo)? asset('/dist/img/user2-160x160.jpg'): asset('uploads/user/' . Auth::user()->photo) }}"
                             class="user-image img-circle elevation-2" alt="{{ Auth::user()->name }}">
                         <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <!-- User image -->
                         <li class="user-header bg-primary">
-                            <img src="{{ empty(Auth::user()->photo) ? asset('/dist/img/user2-160x160.jpg') : asset('uploads/user/'. Auth::user()->photo)}}"
-                                class="img-circle elevation-2" alt="{{Auth::user()->name}}">
+                            <img src="{{ empty(Auth::user()->photo)? asset('/dist/img/user2-160x160.jpg'): asset('uploads/user/' . Auth::user()->photo) }}"
+                                class="img-circle elevation-2" alt="{{ Auth::user()->name }}">
 
                             <p>
                                 {{ Auth::user()->name }} - {{ Auth::user()->roles[0]['name'] }}
@@ -161,7 +165,8 @@
                                 class="btn btn-default btn-flat float-right">
                                 {{ __('Logout') }}
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                class="d-none">
                                 @csrf
                             </form>
                         </li>
@@ -213,13 +218,10 @@
     <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('dist/js/demo.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+
     @yield('js')
     <script type="text/javascript">
-        if( $(".myselect")[0]) {
+        if ($(".myselect")[0]) {
             $(".myselect").select2();
         }
     </script>

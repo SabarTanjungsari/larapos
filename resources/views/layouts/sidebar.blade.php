@@ -97,6 +97,12 @@
                 @can('cart-list')
                 <li class="nav-header">SALES</li>
                 <li class="nav-item">
+                    <a href=" {{ route('cashiers.index') }}" class="nav-link">
+                        <i class="fa fa-shopping-bag nav-icon"></i>
+                        <p>Cashier</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href=" {{ route('order.transaction') }}" class="nav-link">
                         <i class="fa fa-shopping-cart nav-icon"></i>
                         <p>Transaction</p>
